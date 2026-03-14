@@ -28,7 +28,7 @@ function getHashCoords(str: string) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const hub = hubs[Math.abs(hash) % hubs.length];
-  const latSpread = ((hash % 100) / 100) * 8 - 4; 
+  const latSpread = ((hash % 100) / 100) * 8 - 4;
   const lngSpread = (((hash >> 2) % 100) / 100) * 8 - 4;
   return {
     loc: hub.loc,
@@ -44,18 +44,17 @@ export async function GET(req: Request) {
   const force = searchParams.get("force") === "true";
   const now = Date.now();
 
-  // If cache is empty and we haven't fetched in 2 seconds, force a fetch
   const shouldFetch = force || now - lastFetchTime > 10000 || cachedEvents.length === 0;
 
   if (shouldFetch) {
     try {
       console.log("SERVER: Fetching genuine GitHub telemetry...");
       const token = process.env.GITHUB_TOKEN;
-      const headers: Record<string, string> = { 
+      const headers: Record<string, string> = {
         "User-Agent": "GitHub-Activity-Globe-App",
         "Accept": "application/vnd.github.v3+json",
       };
-      
+
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
@@ -67,13 +66,12 @@ export async function GET(req: Request) {
 
       if (res.ok) {
         const rawEvents = await res.json();
-        
+
         if (Array.isArray(rawEvents) && rawEvents.length > 0) {
           const uniqueEntries = new Map();
-          
-          // Carry over some cache
+
           cachedEvents.slice(0, 300).forEach(e => uniqueEntries.set(e.id, e));
-          
+
           rawEvents.forEach((ev: any) => {
             if (!uniqueEntries.has(ev.id) && ev.actor && ev.actor.login) {
               const geo = getHashCoords(ev.actor.login);

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Activity, MapPin, BarChart3, Globe2, RefreshCcw, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import Image from "next/image";
 
 interface GlobeEvent {
   id: string;
@@ -73,6 +74,7 @@ export function Overlay() {
       >
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
+            <Image src={`/assets/logo.png`} alt="Logo" width={100000002} height={100000002} className="w-12 h-12" />
             <h1 className="text-lg lg:text-3xl font-bold font-title tracking-tighter uppercase text-white drop-shadow">
               GAG
             </h1>
@@ -83,7 +85,6 @@ export function Overlay() {
         </div>
       </motion.div>
 
-      {/* 📊 Sidebar Stats: Responsive Hide */}
       <div className="flex justify-between items-end flex-grow mb-6 gap-6">
         
         <motion.div
@@ -133,10 +134,8 @@ export function Overlay() {
            </div>
         </motion.div>
 
-        {/* 📜 Event Stream: Mobile Floating Panel */}
         <div className="w-full lg:w-80 pointer-events-auto relative">
           
-          {/* Mobile Toggle Button */}
           <div className="lg:hidden flex justify-center mb-4">
             <button 
               onClick={() => setIsStreamOpen(!isStreamOpen)}
